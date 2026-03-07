@@ -25,7 +25,7 @@ class InventoryPage:
         drop.select_by_value(orderValue)
 
     def get_titles_list(self):
-        titles = self.wait.until(EC.presence_of_all_element_located(self.ITEM_TITLE))
+        titles = self.wait.until(EC.presence_of_all_elements_located(self.ITEM_TITLE))
        # titles  = self.driver.find_elements(*self.ITEM_TITLE)
         list_titles = []
         '''
