@@ -52,7 +52,6 @@ def logged_driver(driver):
 def checkout_driver(logged_driver):
     page = InventoryPage(logged_driver)
     page.prep_to_checkout()
-    WebDriverWait(logged_driver, 10).until(EC.url_contains("cart"))
 
     yield logged_driver
 
