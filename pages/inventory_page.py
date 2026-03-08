@@ -8,9 +8,10 @@ class InventoryPage:
 
     ITEM_TITLE = (By.CLASS_NAME, "inventory_item_name")
     ITEM_PRICE = (By.CLASS_NAME, "inventory_item_price")
-    ADD_TO_CART_BTN = (By.CLASS_NAME, "btn_inventory")
+    ADD_TO_CART_BTN = (By.CSS_SELECTOR, "[data-test^='add-to-cart']")
     SELECT_DROPDOWN = (By.CLASS_NAME, "product_sort_container")
     CART_ICON = (By.CLASS_NAME, "shopping_cart_link")
+
 
     def __init__(self, driver):
         self.driver = driver
@@ -40,10 +41,15 @@ class InventoryPage:
         self.wait.until(EC.element_to_be_clickable(self.CART_ICON)).click()
 
     def prep_to_checkout(self):
-        #buttons = self.wait.until(EC.presence_of_all_elements_located (self.ADD_TO_CART_BTN))
+        '''
+        buttons = self.wait.until(EC.presence_of_all_elements_located (self.ADD_TO_CART_BTN))
         for i in range(3):
             buttons = self.wait.until(EC.presence_of_all_elements_located(self.ADD_TO_CART_BTN))
             buttons[i].click()
+        self.wait.until(EC.element_to_be_clickable(self.CART_ICON)).click()
+        '''
+        for _ in range(3):
+            self.wait.until(EC.element_to_be_clickable(self.ADD_TO_CART_BTN)).click()
         self.wait.until(EC.element_to_be_clickable(self.CART_ICON)).click()
 
 
