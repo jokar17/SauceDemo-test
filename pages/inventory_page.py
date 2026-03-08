@@ -40,10 +40,10 @@ class InventoryPage:
         self.wait.until(EC.element_to_be_clickable(self.CART_ICON)).click()
 
     def prep_to_checkout(self):
-        buttons = self.wait.until(EC.presence_of_all_elements_located (self.ADD_TO_CART_BTN))
-        buttons[0].click()
-        buttons[1].click()
-        buttons[2].click()
+        #buttons = self.wait.until(EC.presence_of_all_elements_located (self.ADD_TO_CART_BTN))
+        for i in range(3):
+            buttons = self.wait.until(EC.presence_of_all_elements_located(self.ADD_TO_CART_BTN))
+            buttons[i].click()
         self.wait.until(EC.element_to_be_clickable(self.CART_ICON)).click()
 
 
