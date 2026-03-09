@@ -15,7 +15,7 @@ class InformationPage:
 
     def __init__(self, driver):
         self.driver = driver
-        self.wait = WebDriverWait(driver, 10)
+        self.wait = WebDriverWait(driver, 20)
 
     def fill_checkout_form(self, name=None, surname=None, zip=None):
         if name:

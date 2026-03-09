@@ -12,6 +12,8 @@ class InventoryPage:
     SELECT_DROPDOWN = (By.CLASS_NAME, "product_sort_container")
     CART_ICON = (By.CLASS_NAME, "shopping_cart_link")
 
+    CART_BADGE = (By.CLASS_NAME, "shopping_cart_badge")
+
 
     def __init__(self, driver):
         self.driver = driver
@@ -52,9 +54,9 @@ class InventoryPage:
         self.wait.until(EC.presence_of_element_located(self.CART_ICON)).click()
     '''
 
-
     def prep_to_checkout(self):
         for _ in range(3):
             self.wait.until(EC.element_to_be_clickable(self.ADD_TO_CART_BTN)).click()
+        self.wait.until(lambda d: d.find_element(*self.CART_BADGE).text == "3")
         self.wait.until(EC.element_to_be_clickable(self.CART_ICON)).click()
 
