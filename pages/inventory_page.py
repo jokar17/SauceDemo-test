@@ -54,14 +54,18 @@ class InventoryPage:
         self.wait.until(EC.presence_of_element_located(self.CART_ICON)).click()
     '''
 
+    REMOVE_BTN = (By.CSS_SELECTOR, "[data-test^='remove']")
+
     def prep_to_checkout(self):
         for i in range(3):
-            self.wait.until(EC.element_to_be_clickable(self.ADD_TO_CART_BTN)).click()
-            WebDriverWait(self.driver, 20).until(
-                lambda d, expected=i + 1: self._badge_count(d) == expected
+            btn = self.wait.until(EC.element_to_be_clickable(self.ADD_TO_CART_BTN))
+            self.driver.execute_script("arguments[0].click();", btn)
+            WebDriverWait(self.driver, 10).until(
+                lambda d, n=i + 1: len(d.find_elements(*self.REMOVE_BTN)) == n
             )
         self.wait.until(EC.element_to_be_clickable(self.CART_ICON)).click()
 
+        
     def _badge_count(self, d):
         try:
             return int(d.find_element(*self.CART_BADGE).text)
