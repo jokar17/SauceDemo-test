@@ -57,15 +57,27 @@ class InventoryPage:
     REMOVE_BTN = (By.CSS_SELECTOR, "[data-test^='remove']")
 
     def prep_to_checkout(self):
+        # debug: vediamo cosa c'è sulla pagina
+        self.driver.save_screenshot("reports/screenshots/debug_before_click.png")
+
         for i in range(3):
-            btn = self.wait.until(EC.element_to_be_clickable(self.ADD_TO_CART_BTN))
-            self.driver.execute_script("arguments[0].click();", btn)
+            buttons = self.driver.find_elements(*self.ADD_TO_CART_BTN)
+            print(f"--- Iterazione {i}: trovati {len(buttons)} bottoni add-to-cart ---")
+            print(f"    URL: {self.driver.current_url}")
+
+            if not buttons:
+                self.driver.save_screenshot(f"reports/screenshots/debug_no_buttons_{i}.png")
+                raise Exception(f"Nessun bottone add-to-cart trovato all'iterazione {i}")
+
+            self.driver.execute_script("arguments[0].click();", buttons[0])
+
             WebDriverWait(self.driver, 10).until(
-                lambda d, n=i + 1: len(d.find_elements(*self.REMOVE_BTN)) == n
+                lambda d, n=i + 1: self._badge_count(d) == n
             )
+
         self.wait.until(EC.element_to_be_clickable(self.CART_ICON)).click()
 
-        
+
     def _badge_count(self, d):
         try:
             return int(d.find_element(*self.CART_BADGE).text)

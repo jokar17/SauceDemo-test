@@ -1,5 +1,4 @@
 name: Selenium Tests
-
 on:
   push:
     branches: [main]
@@ -14,6 +13,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Create screenshots dir
+        run: mkdir -p reports/screenshots
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
@@ -23,7 +25,7 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Run tests
-        run: python -m pytest --browser=chrome
+        run: python -m pytest --browser=chrome -s
 
       - name: Upload report
         if: always()
@@ -31,3 +33,10 @@ jobs:
         with:
           name: test-report
           path: reports/report.html
+
+      - name: Upload debug screenshots
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-screenshots
+          path: reports/screenshots/
